@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Apr 13 19:24:33 2018
+Created on Wed Apr 18 11:28:25 2018
 
 @author: DrLC
 """
@@ -19,7 +19,7 @@ def print_help():
     
     print ("+---------------------------------+")
     print ("|                                 |")
-    print ("|          Echo Rate Test         |")
+    print ("|       Echo Fail Rate Test       |")
     print ("|                                 |")
     print ("|           by DRLC (ZHZ)         |")
     print ("|            zhang_hz@pku.edu.cn  |")
@@ -77,24 +77,24 @@ def main(args):
                 sock.settimeout(timeout)
             buf = sock.recv(bufsize)
             str_buf = str(buf, encoding="utf-8")
-            tmp_size = sys.getsizeof(str_buf)
             slot_time.append(time.time())
-            size += tmp_size
-            slot_size.append(tmp_size)
-            if len(slot_size) >= 5000:
+            if str_buf == msg:
+                size += 1
+                slot_size.append(1)
+            else:
+                slot_size.append(0)
+            if len(slot_size) >= 1000:
                 size -= slot_size[0]
                 slot_size = slot_size[1:]
                 slot_time = slot_time[1:]
-            if counter >= 5000:
+            if counter >= 1000:
                 counter = 0
-                print (("\rEcho rate: %.1f Mbps, %.1f Gbps"
-                        % (size / 1000 / (slot_time[-1] - slot_time[0]),
-                           size / 1000000 / (slot_time[-1] - slot_time[0]))),
-                       end="")
-        except socket.timeout:
-            print ("Server timeout!")
-            goon = False
-            return
+                print (("\rFail rate: %.1f%%"
+                        % (float(size) / float(len(slot_size)) * 100)), end="")
+        except socket.timeout as e:
+            slot_size.append(0)
+            print ("\rTimeout", end="")
+            continue
         except:
             print ("Shutdown!")
             goon = False

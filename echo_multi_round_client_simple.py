@@ -77,7 +77,7 @@ def main(args):
             goon = False
             return
         except:
-            print ("Server shutdown connection!")
+            print ("Shutdown!")
             goon = False
             return
         

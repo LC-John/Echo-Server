@@ -29,6 +29,10 @@ def echo_server(client, timeout, bufsize):
                 client.close()
                 goon = False
                 return
+            if len(str_buf) == 0:
+                print ("Client "+str(client.getpeername())+" shutdown!")
+                goon = False
+                return
             print ("From client "+str(client.getpeername())+" > "+str_buf)
             client.send(buf)
         except socket.timeout:
@@ -36,7 +40,7 @@ def echo_server(client, timeout, bufsize):
             goon = False
             return
         except:
-            print ("Client "+str(client.getpeername())+" shutdown connection!")
+            print ("Client "+str(client.getpeername())+" shutdown!")
             goon = False
             return
         
