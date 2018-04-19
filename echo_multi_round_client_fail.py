@@ -90,7 +90,7 @@ def main(args):
             if counter >= 1000:
                 counter = 0
                 print (("\rFail rate: %.1f%%"
-                        % (float(size) / float(len(slot_size)) * 100)), end="")
+                        % (1-float(size) / float(len(slot_size)) * 100)), end="")
         except socket.timeout as e:
             slot_size.append(0)
             print ("\rTimeout", end="")

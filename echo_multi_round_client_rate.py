@@ -8,12 +8,14 @@ Created on Fri Apr 13 19:24:33 2018
 import socket
 import sys
 import time
+import matplotlib.pyplot as plt
 
 DEFAULT_IP = 'localhost'
 DEFAULT_PORT = 2333
 DEFAULT_BUFSIZE = 1024
 DEFAULT_TIMEOUT = 10
 DEFAULT_LENGTH = 1000
+DEFAULT_FIGURE_PATH = "rate.jpg"
 
 def print_help():
     
@@ -68,6 +70,9 @@ def main(args):
     slot_time = [time.time()]
     size = 0
     counter = 0
+    plt_time = []
+    plt_rate = []
+    start_time = slot_time[0]
     while goon:
         try:
             counter += 1
@@ -81,12 +86,17 @@ def main(args):
             slot_time.append(time.time())
             size += tmp_size
             slot_size.append(tmp_size)
-            if len(slot_size) >= 5000:
+            if len(slot_size) >= 2000:
                 size -= slot_size[0]
                 slot_size = slot_size[1:]
                 slot_time = slot_time[1:]
-            if counter >= 5000:
+            if counter >= 2000:
                 counter = 0
+                plt_time.append(slot_time[-1] - start_time)
+                plt_rate.append(size / 1000 / (slot_time[-1] - slot_time[0]))
+                if len(plt_rate) >= 100000:
+                    plt_time = plt_time[1:]
+                    plt_rate = plt_rate[1:]
                 print (("\rEcho rate: %.1f Mbps, %.1f Gbps"
                         % (size / 1000 / (slot_time[-1] - slot_time[0]),
                            size / 1000000 / (slot_time[-1] - slot_time[0]))),
@@ -97,6 +107,11 @@ def main(args):
             return
         except:
             print ("Shutdown!")
+            plt.plot(plt_time, plt_rate)
+            plt.xlabel("time / sec")
+            plt.ylabel("rate / Mbps")
+            plt.ylim([0, 10000])
+            plt.savefig(DEFAULT_FIGURE_PATH)
             goon = False
             return
         
