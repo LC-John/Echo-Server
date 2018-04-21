@@ -87,6 +87,8 @@ Arguments are listed as below:
                 default value 1024
 ```
 
+**Notice that simply close the console without shutting down the client process may cause some bugs on the server. PLEASE SHUT DOWN THE CLIENT BEFORE CLOSE YOUR CONSOLE!**
+
 ## Test Client
 
 There are two more clients in the directory `clients`, and they are for testing.
@@ -104,3 +106,5 @@ There are two more clients in the directory `clients`, and they are for testing.
 2. Send a message which contains one thousand 0's.
 3. Wait until receive a message, and compare it to the original message.
 4. Recalculate echo rate. Go to 2.
+
+**Notice that simply close the console without shutting down the client process may cause some bugs on the server. PLEASE SHUT DOWN THE CLIENT BEFORE CLOSE YOUR CONSOLE!**
