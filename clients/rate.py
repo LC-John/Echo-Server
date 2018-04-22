@@ -86,15 +86,15 @@ def main(args):
                 sock.settimeout(timeout)
             buf = sock.recv(bufsize)
             str_buf = str(buf, encoding="utf-8")
-            tmp_size = sys.getsizeof(str_buf)
+            tmp_size = sys.getsizeof(str_buf) * 8
             slot_time.append(time.time())
             size += tmp_size
             slot_size.append(tmp_size)
-            if len(slot_size) >= 10:
+            if len(slot_size) >= 20:
                 size -= slot_size[0]
                 slot_size = slot_size[1:]
                 slot_time = slot_time[1:]
-            if counter >= 10:
+            if counter >= 20:
                 counter = 0
                 plt_time.append(slot_time[-1] - start_time)
                 plt_rate.append(size / 1000 / (slot_time[-1] - slot_time[0]))
