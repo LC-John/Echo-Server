@@ -1,6 +1,6 @@
-# Dummy Chat
+# Echo Server
 
-This repo is about a set of dummy client-server chat programs.
+This repo is about a set of dummy client-server echo programs.
 
 They are boring. They are useless. They are just for homework.
 
